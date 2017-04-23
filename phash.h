@@ -4,6 +4,7 @@
  *
  **/
 
+#include "rwlock.h"
 
 class LinkedHashEntry {
 private:
@@ -24,11 +25,16 @@ public:
 class HashMap {
 private:
       LinkedHashEntry **table;
+      #ifndef FINEGRAIN
+            RWLock rwlock;
+      #else
+            RWLock* rwlocks;
+      #endif
 public:
       HashMap(); 
       int get(int key); 
       void put(int key, int value); 
-      void remove(int key); 
+      bool remove(int key); 
       ~HashMap(); 
 };
 

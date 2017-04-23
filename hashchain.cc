@@ -82,7 +82,7 @@ HashMap::put(int key, int value) {
       }
  
 
-void
+bool
 HashMap:: remove(int key) {
             int hash = (key % TABLE_SIZE);
             if (table[hash] != NULL) {
@@ -97,13 +97,16 @@ HashMap:: remove(int key) {
                              LinkedHashEntry *nextEntry = entry->getNext();
                              delete entry;
                              table[hash] = nextEntry;
+                             return true;
                         } else {
                              LinkedHashEntry *next = entry->getNext();
                               delete entry;
                              prevEntry->setNext(next);
+                             return true;
                         }
                   }
             }
+            return false;
       }
  
 HashMap:: ~HashMap() {

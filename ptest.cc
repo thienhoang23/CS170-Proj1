@@ -55,7 +55,7 @@ void test1(HashMap *htable, int n, int k, int w){
 
 HashMap hash;
 int NUMKEYS=1000;
-#define NumberofThread 1
+#define NumberofThread 10
 pthread_t thr[NumberofThread];
 
 void *tfunc(void *arg){
@@ -79,9 +79,9 @@ void test(){
 	//  Start Timers
 	double wall0 = get_wall_time();
 	double cpu0  = get_cpu_time();
-
+    /*
 	for (i=0; i<NUMKEYS; i++)
-		hash.put(i,i);
+		hash.put(i,i); */
 
 	if(NumberofThread>1){
         	for(i=0;i<NumberofThread;i++) 
@@ -107,6 +107,7 @@ int main()
 {
     int key, value;
     int choice;
+    bool success;
     test();
 
     while (1)
@@ -146,7 +147,11 @@ int main()
         case 3:
             cout<<"Enter key of the element to be deleted: ";
             cin>>key;
-            hash.remove(key);
+            success = hash.remove(key);
+            if(success)
+                cout << "DELETE SUCCESS" << endl;
+            else
+                cout << "DELETE FAIL" << endl;
             break;
         case 4:
     	    test();
