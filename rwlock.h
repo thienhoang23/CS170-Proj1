@@ -8,12 +8,17 @@
 class RWLock{
 private:
 #ifdef RWLOCK
-	pthread_rwlock_t rwlock = PTHREAD_RWLOCK_INITIALIZER;
-#else 
-	pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER; 
+	pthread_cond_t readCV = PTHREAD_COND_INITIALIZER;
+	pthread_cond_t writeCV = PTHREAD_COND_INITIALIZER;
+	int AW;
+	int WW;
+	int AR;
+	int WR;
 #endif
+	pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER; 
  
 public:
+		RWLock();
     	~RWLock();
     //Reader
     	void startRead();
