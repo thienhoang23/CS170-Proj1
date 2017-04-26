@@ -109,7 +109,7 @@ void test(){
     cout << "Wall Time = " << wall1 - wall0 << "s"<<endl;
     //cout << "CPU Time  = " << cpu1  - cpu0  << "s"<<endl;
     ///cout << "Throughput= " << (4*NUMKEYS+8)/((wall1 - wall0))  << "/s"<<endl;
-    cout << "Ops/sec = " << Num_commands / (wall1 = wall0) << "/s" << endl;
+    cout << "Ops/sec = " << Num_commands / (wall1 - wall0) << "/s" << endl;
 }
  
  
