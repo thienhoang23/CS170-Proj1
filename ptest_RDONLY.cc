@@ -20,7 +20,7 @@ using namespace std;
 #include "phash.h"
 #endif
  
- 
+#define Num_commands 3002000.0
  
 #include <sys/time.h>
 double get_wall_time(){
@@ -104,11 +104,12 @@ void test(){
     //  Stop timers
     double wall1 = get_wall_time();
     double cpu1  = get_cpu_time();
-    cout << "Average Overhead for Spawning = " << spawn_time/NumberofThread << "s" << endl; 
-    cout << "Average Overhead for Joining = " << join_time/NumberofThread << "s" << endl;
+    // cout << "Average Overhead for Spawning = " << spawn_time/NumberofThread << "s" << endl; 
+    // cout << "Average Overhead for Joining = " << join_time/NumberofThread << "s" << endl;
     cout << "Wall Time = " << wall1 - wall0 << "s"<<endl;
-    cout << "CPU Time  = " << cpu1  - cpu0  << "s"<<endl;
-    cout << "Throughput= " << (4*NUMKEYS+8)/((wall1 - wall0))  << "/s"<<endl;
+    //cout << "CPU Time  = " << cpu1  - cpu0  << "s"<<endl;
+    ///cout << "Throughput= " << (4*NUMKEYS+8)/((wall1 - wall0))  << "/s"<<endl;
+    cout << "Ops/sec = " << Num_commands / (wall1 = wall0) << "/s" << endl;
 }
  
  

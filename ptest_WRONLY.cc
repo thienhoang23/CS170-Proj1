@@ -20,7 +20,7 @@ using namespace std;
 #include "phash.h"
 #endif
  
- 
+#define Num_commands 5996.0
  
 #include <sys/time.h>
 double get_wall_time(){

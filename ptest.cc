@@ -19,8 +19,8 @@ using namespace std;
 #include "rwlock.h"
 #include "phash.h"
 #endif
- 
- 
+
+#define Num_commands 3007996.0 
  
 #include <sys/time.h>
 double get_wall_time(){
@@ -88,17 +88,17 @@ void test(){
         hash.put(i,i); */
  
     if(NumberofThread>1){
-        double spawn_start_time = get_wall_time();
+        // double spawn_start_time = get_wall_time();
         for(i=0;i<NumberofThread;i++) 
             pthread_create(&thr[i], NULL, tfunc, (void *)  i);
-        double spawn_end_time = get_wall_time();
-        spawn_time = spawn_end_time - spawn_start_time;
-        double join_start_time = get_wall_time();
+        // double spawn_end_time = get_wall_time();
+        // spawn_time = spawn_end_time - spawn_start_time;
+        // double join_start_time = get_wall_time();
         for(i=0;i<NumberofThread;i++) {
             pthread_join(thr[i], NULL);
         }
-        double join_end_time = get_wall_time();
-        join_time = join_end_time - join_start_time;
+        // double join_end_time = get_wall_time();
+        // join_time = join_end_time - join_start_time;
     }
     else {
         i=0;
@@ -108,11 +108,12 @@ void test(){
     //  Stop timers
     double wall1 = get_wall_time();
     double cpu1  = get_cpu_time();
-    cout << "Average Overhead for Spawning = " << spawn_time/NumberofThread << "s" << endl; 
-    cout << "Average Overhead for Joining = " << join_time/NumberofThread << "s" << endl;
+    // cout << "Average Overhead for Spawning = " << spawn_time/NumberofThread << "s" << endl; 
+    // cout << "Average Overhead for Joining = " << join_time/NumberofThread << "s" << endl;
     cout << "Wall Time = " << wall1 - wall0 << "s"<<endl;
-    cout << "CPU Time  = " << cpu1  - cpu0  << "s"<<endl;
-    cout << "Throughput= " << (4*NUMKEYS+8)/((wall1 - wall0))  << "/s"<<endl;
+    //cout << "CPU Time  = " << cpu1  - cpu0  << "s"<<endl;
+    ///cout << "Throughput= " << (4*NUMKEYS+8)/((wall1 - wall0))  << "/s"<<endl;
+    cout << "Ops/sec = " << Num_commands / (wall1 = wall0) << "/s" << endl;
 }
  
  

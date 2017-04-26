@@ -30,14 +30,8 @@ private:
       #else
             RWLock* rwlocks;
       #endif
-      // double get_total_time;
-      // double put_total_time;
-      // double remove_total_time;
 public:
       HashMap();
-      // double getTotalGetTime(){ return get_total_time;}
-      // double getTotalPutTime(){ return put_total_time;}
-      // double getTotalRemoveTime(){ return remove_total_time;}
       int get(int key);
       void put(int key, int value); 
       bool remove(int key); 

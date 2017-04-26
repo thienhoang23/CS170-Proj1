@@ -44,9 +44,6 @@ void LinkedHashEntry:: setNext(LinkedHashEntry *next) {
 const int TABLE_SIZE = 128;
 
 HashMap::HashMap() {
-  // get_total_time = 0.0;
-  // put_total_time = 0.0;
-  // remove_total_time = 0.0;
   table = new LinkedHashEntry*[TABLE_SIZE];
   rwlocks = new RWLock[TABLE_SIZE];
   for (int i = 0; i < TABLE_SIZE; i++)

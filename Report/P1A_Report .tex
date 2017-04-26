@@ -22,7 +22,7 @@
 \centerline{\Large\textbf{P1A Report}}
 \vspace{0.3cm}
 \section{Introduction}
-In this report, we will try to report about the performance of a concurrent Hashtable with 1000 keys and 200 threads under 4 different synchronization options and a benchmark specified below.
+In this report, we will try to report about the performance of a concurrent Hashtable with 1000 keys and 200 threads under 4 different synchronization options and 3 kind of benchmark
 \subsection{The 4 different Synchronization Options}
 \begin{enumerate}
 	\item Coarse Grain: Using 1 mutex to lock up the entire table for each access
@@ -31,48 +31,108 @@ In this report, we will try to report about the performance of a concurrent Hash
 	\item Fine Grain RW: Using as many Read-Write Locks as there are buckets in the table, each lock for 1 bucket.
 \end{enumerate}
 \subsection{The Benchmark}
-This bench mark has 3,007,996 commands including 3,002,000 gets, 4,996 puts, and 1000 removes.
+\begin{enumerate}
+	\item Read only: a total 3,002,000 get commands split evenly among 200 threads.
+	\item Write only: 4,996 puts and 1000 removes split evenly among 200 threads.
+	\item Mix of Read and Write: 3,007,996 commands including 3,002,000 gets, 4,996 puts, and 1000 removes, split evenly among 200 threads.
+\end{enumerate}
 \subsection{Other}
 Besides the bench mark introduced above, we will also report about the average overhead of spawning a thread and joining a thread.
 \section{Experiments}
 \subsection{Naive Performance Benchmark}
+\subsubsection{Read Only}
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
-		Sync. Option &Wall Time (sec)	&Throughput (ops/sec)	\\
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
 		\hline
-		Coarse &0.522035	&45762058.10\\
+		Coarse &0.408884	&7,341,935.61\\
 		\hline
-		Coarse RW	&2.13464	&1409135.03\\
+		Coarse RW	&0.799159	&3,756,448.97\\
 		\hline
-		Fine	&0.0490201	&61362502.32\\
+		Fine	&0.0393131	&76,361,314.68\\
 		\hline
-		Fine RW	&0.0717359	&41931529.40\\
+		Fine RW	&0.101336	&29,624,220.42\\
+		\hline
+		\end{tabular}
+		\end{table}
+\subsubsection{Write Only}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &0.00861979	&695,608.59\\
+		\hline
+		Coarse RW	&0.0707738	&84,720.62\\
+		\hline
+		Fine	&0.0054729	&1,095,580.04\\
+		\hline
+		Fine RW	&0.00751996	&797,344.67\\
+		\hline
+		\end{tabular}
+		\end{table}
+\subsubsection{Mix of Read and Write}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &0.522035	&45,762,058.10\\
+		\hline
+		Coarse RW	&2.13464	&1,409,135.03\\
+		\hline
+		Fine	&0.0490201	&61,362,502.32\\
+		\hline
+		Fine RW	&0.0717359	&41,931,529.40\\
 		\hline
 	\end{tabular}
 \end{table}
 \subsection{Edited Performance Benchmark}
-Because the get performance is so fast, we will need to let each thread sleep for 1 ms whenever it calls get in order to get a closer measure of the performance difference. Here is the result.
+Because the get performance is so fast, we will need to let each thread sleep for 1 microsecond whenever it calls get in order to get a closer measure of the performance difference. Since the sleep command is only applied for the read operations, there will be no different on the second and third benchmarks. So we will report only the first and fourth benchmarks here.
+\subsubsection{Read Only}
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|c|c|c|}
 		\hline
-		Sync. Option &Wall Time (sec)	&Throughput (ops/sec)	\\
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
 		\hline
-		Coarse &1.73189	&1736828.551\\
+		Coarse &1.4874	&2,018,286.944\\
 		\hline
-		Coarse RW &2.79543 &1076040.538\\
+		Coarse RW &1.75429 &1,711,233.604\\
 		\hline
-		Fine	&1.30724	&2301028.120\\
+		Fine	&1.28838	&2,330,057.902\\
 		\hline
-		Fine RW	&1.34542	&2235730.107\\
+		Fine RW	&1.30686	&2,297,109.101\\
 		\hline
 	\end{tabular}
 \end{table}
-As predicted, fine grain lock perform much better than the coarse grain lock because it allows more concurrent access than its coarse grain neighbor.\\
-However, something surprising worth noting is that the programs with Read and Write locks actually perform worse than its Mutex counterpart. This is counterintuitive because in theory, a read and write lock implementation should be faster because it allows for as many read threads to finish concurrently as possible compared to mutex where there is a finite number of thread can finish concurrently.\\
-We suspect that the Read and Write Lock actually perform worse in this case because there is an overhead of creating the Read and Write Lock (more locks and condition variables to initialize) and because writers with a read and write lock are actually less efficient than the writers in mutex because they have more instructions to perform and also more wait time.
+\subsubsection{Mix of Read and Write}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &1.73189	&1,736,828.551\\
+		\hline
+		Coarse RW &2.79543 &1,076,040.538\\
+		\hline
+		Fine	&1.30724	&2,301,028.120\\
+		\hline
+		Fine RW	&1.34542	&2,235,730.107\\
+		\hline
+	\end{tabular}
+\end{table}
+\subsubsection{Comment}
+As predicted, fine grain lock perform much better than the coarse grain lock because it allows more concurrent access than its coarse grain counterpart.\\
+Also, there was no surprise when the Read and Write lock performs worse than its Mutex counterpart when it comes to write only task. This is because the writers in the read and write lock have more instructions to execute and also have to spend more time waiting.\\
+However, something surprising worth noting is that the programs with Read and Write locks actually perform worse than its Mutex counterpart even on the Read Only benchmark and Mix of Read and Write benchmark. This is counterintuitive because in theory, a read and write lock implementation should be faster because it allows for as many read threads to finish concurrently as possible compared to mutex where there is a finite number of thread can finish concurrently.\\
+We suspect that the Read and Write Lock actually perform worse in this case because there is an overhead of creating the Read and Write Lock (more locks and condition variables to initialize) and because the added overhead within the locking mechanic when using read write block. These overheads come in the form of extra condition checks, extra instructions, and more time spent waiting.\\
+We believe that these added overheads outweigh the gain from unlimited reader access when executing with only 200 threads. We believe if the number of threads was to be increased to a proper amount, gain in performance will outweigh these overhead. Extra experiments can be found in section 3.
 \subsection{Average Spawn Time and Join Time}
 \begin{table}[H]
 	\centering
@@ -95,4 +155,60 @@ There are two things worth noting here:
 	\item The Average Spawn Time is somewhat similar regardless of the synchronization option used.
 	\item The more important thing is that the Average Join Time is faster by an order of 10 magnitude when running on the faster synchronization method. This is due to the fact that the join function will make the main thread waiting on the worker threads to finish. Thus, the longer the worker thread takes to finish, the longer the main thread wait, hence the more time is waste not doing work.
 \end{enumerate}
+\section{Extra Experiment with different number of threads}
+Since Read and Write locks are designed to optimize performance for reader-intensive applications, we will only test on Benchmark 1 and 4. Also, the 1 microsecond delay is still added in these experiments.
+\subsubsection{Read Only}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &1.4874	&2,018,286.944\\
+		\hline
+		Coarse RW &1.75429 &1,711,233.604\\
+		\hline
+		Fine	&1.28838	&2,330,057.902\\
+		\hline
+		Fine RW	&1.30686	&2,297,109.101\\
+		\hline
+	\end{tabular}
+	\caption{200 threads}
+\end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &1.39022	&2,018,286.944\\
+		\hline
+		Coarse RW &1.58382 &1,711,233.604\\
+		\hline
+		Fine	&1.16958	&2,330,057.902\\
+		\hline
+		Fine RW	&1.17231	&2,297,109.101\\
+		\hline
+	\end{tabular}
+	\caption{400 threads}
+\end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &1.2983	&2,018,286.944\\
+		\hline
+		Coarse RW &1.57306 &1,711,233.604\\
+		\hline
+		Fine	&1.12779	&2,330,057.902\\
+		\hline
+		Fine RW	&1.06289	&2,297,109.101\\
+		\hline
+	\end{tabular}
+	\caption{600 threads}
+\end{table}
+\subsubsection{Mix of Read And Write}
+
 \end{document}
