@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.5.12)  26 APR 2017 10:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2016.5.12)  26 APR 2017 10:47
 entering extended mode
 **"./P1A_Report .tex"
 ("P1A_Report .tex"
@@ -350,23 +350,37 @@ Package Fancyhdr Warning: \headheight is too small (12.0pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[4] ("P1A_Report .aux") ) 
+[4]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[5]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[6] ("P1A_Report .aux") ) 
 Here is how much of TeX's memory you used:
  5451 strings out of 493634
  79508 string characters out of 3141294
- 147143 words of memory out of 3000000
+ 148143 words of memory out of 3000000
  8758 multiletter control sequences out of 15000+200000
  10107 words of font info for 38 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 59i,10n,94p,493b,340s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 59i,10n,94p,731b,340s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/
 amsfonts/cm/cmbx10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/am
 sfonts/cm/cmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsf
 onts/cm/cmcsc10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmr10.pfb>
-Output written on "P1A_Report .pdf" (4 pages, 75071 bytes).
+Output written on "P1A_Report .pdf" (6 pages, 79949 bytes).
 PDF statistics:
- 31 PDF objects out of 1000 (max. 8388607)
+ 37 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

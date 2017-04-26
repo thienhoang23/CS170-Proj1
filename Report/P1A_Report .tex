@@ -157,7 +157,7 @@ There are two things worth noting here:
 \end{enumerate}
 \section{Extra Experiment with different number of threads}
 Since Read and Write locks are designed to optimize performance for reader-intensive applications, we will only test on Benchmark 1 and 4. Also, the 1 microsecond delay is still added in these experiments.
-\subsubsection{Read Only}
+\subsection{Read Only}
 \begin{table}[H]
 	\centering
 	\begin{tabular}{|c|c|c|}
@@ -181,13 +181,13 @@ Since Read and Write locks are designed to optimize performance for reader-inten
 		\hline
 		Sync. Option &Wall Time (sec)	&Operations per Second	\\
 		\hline
-		Coarse &1.39022	&2,018,286.944\\
+		Coarse &1.35993	&2.20747 e+06\\
 		\hline
-		Coarse RW &1.58382 &1,711,233.604\\
+		Coarse RW &1.54115 &1.9479 e+06\\
 		\hline
-		Fine	&1.16958	&2,330,057.902\\
+		Fine	&1.14041	&2.63239 e+06\\
 		\hline
-		Fine RW	&1.17231	&2,297,109.101\\
+		Fine RW	&1.23146	&2.43775 e+06\\
 		\hline
 	\end{tabular}
 	\caption{400 threads}
@@ -198,17 +198,105 @@ Since Read and Write locks are designed to optimize performance for reader-inten
 		\hline
 		Sync. Option &Wall Time (sec)	&Operations per Second	\\
 		\hline
-		Coarse &1.2983	&2,018,286.944\\
+		Coarse &1.23286	&2.43498 e+06\\
 		\hline
-		Coarse RW &1.57306 &1,711,233.604\\
+		Coarse RW &1.56628 &1.91664 e+06\\
 		\hline
-		Fine	&1.12779	&2,330,057.902\\
+		Fine	&1.09274	&2.74723 e+06\\
 		\hline
-		Fine RW	&1.06289	&2,297,109.101\\
+		Fine RW	&1.07602	&2.7899 e+06\\
+		\hline
+	\end{tabular}
+	\caption{500 threads}
+\end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse & 1.34822 &2.22663 e+06\\
+		\hline
+		Coarse RW &1.52417 &1.9696 e+06\\
+		\hline
+		Fine	&1.13188	&2.65223 e+06\\
+		\hline
+		Fine RW	&1.1755	&2.55381 e+06\\
 		\hline
 	\end{tabular}
 	\caption{600 threads}
 \end{table}
-\subsubsection{Mix of Read And Write}
-
+Aroung 500 threads is when Fine Grain Read-Write Lock starts outperforming Fine Grain Mutex Regularly. However, at 600 threads, we start seeing Fine Grain Mutex starts outperforming again. However, there is no sign of Coarse RW beating Coarse. 
+\subsection{Mix of Read And Write}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &1.73189	&1,736,828.551\\
+		\hline
+		Coarse RW &2.79543 &1,076,040.538\\
+		\hline
+		Fine	&1.30724	&2,301,028.120\\
+		\hline
+		Fine RW	&1.34542	&2,235,730.107\\
+		\hline
+	\end{tabular}
+	\caption{200 threads}
+\end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse & 1.53611	&1.95819 e+06\\
+		\hline
+		Coarse RW &3.30743 &9.09466 e+05\\
+		\hline
+		Fine	&1.16988	&2.57121 e+06\\
+		\hline
+		Fine RW	&1.18146	&2.546 e+06\\
+		\hline
+	\end{tabular}
+	\caption{400 threads}
+\end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &1.47162	&2.044 e+06\\
+		\hline
+		Coarse RW &4.35486 &6.90721 e+05\\
+		\hline
+		Fine	&1.10999	&2.70992 e+06\\
+		\hline
+		Fine RW	&1.14159	&2.63491 e+06\\
+		\hline
+	\end{tabular}
+	\caption{500 threads}
+\end{table}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Operations per Second	\\
+		\hline
+		Coarse &1.52052 &1.97826 e+06\\
+		\hline
+		Coarse RW &4.42036 &6.80486 e+05\\
+		\hline
+		Fine	&1.10568	&2.72048 e+06\\
+		\hline
+		Fine RW	&1.12181	&2.68138 e+06\\
+		\hline
+	\end{tabular}
+	\caption{600 threads}
+\end{table}
+In this experiment, read and write block still cannot out perform its mutex cousins.
+\section{Conclusion}
+Although on theory, Read and Write lock should be much faster than its mutex cousins. However, in practice many of the overheads can add up which makes the program runs slower. In this report, we have tried to bench mark the performance of a Concurrent Hash Table with 2 different kinds of synchronization techniques (fine grain and coarse grain) and both the mutex locks and read-write locks. Although the experiments show Read and Write Lock to be slower than its mutex cousins, we do recognize that the test needs to be more diversified in order for us to have an conclusive result, such as varying the number of keys, the weight percentage as well as the distributions of get, put, and remove operations.
 \end{document}
