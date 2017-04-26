@@ -42,13 +42,13 @@ Besides the bench mark introduced above, we will also report about the average o
 		\hline
 		Sync. Option &Wall Time (sec)	&Throughput (ops/sec)	\\
 		\hline
-		Coarse &0.640702	&6255.64\\
+		Coarse &0.522035	&45762058.10\\
 		\hline
-		Coarse RW	&1.74532	&2296.43\\
+		Coarse RW	&2.13464	&1409135.03\\
 		\hline
-		Fine	&0.140331	&28561\\
+		Fine	&0.0490201	&61362502.32\\
 		\hline
-		Fine RW	&0.178992	&22392.1\\
+		Fine RW	&0.0717359	&41931529.40\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -60,16 +60,19 @@ Because the get performance is so fast, we will need to let each thread sleep fo
 		\hline
 		Sync. Option &Wall Time (sec)	&Throughput (ops/sec)	\\
 		\hline
-		Coarse &8.16822	&490.682\\
+		Coarse &1.73189	&1736828.551\\
 		\hline
-		Coarse RW	&8.94905	&447.869\\
+		Coarse RW &2.79543 &1076040.538\\
 		\hline
-		Fine	&8.45008	&474.315\\
+		Fine	&1.30724	&2301028.120\\
 		\hline
-		Fine RW	&8.54574	&469.006\\
+		Fine RW	&1.34542	&2235730.107\\
 		\hline
 	\end{tabular}
 \end{table}
+As predicted, fine grain lock perform much better than the coarse grain lock because it allows more concurrent access than its coarse grain neighbor.\\
+However, something surprising worth noting is that the programs with Read and Write locks actually perform worse than its Mutex counterpart. This is counterintuitive because in theory, a read and write lock implementation should be faster because it allows for as many read threads to finish concurrently as possible compared to mutex where there is a finite number of thread can finish concurrently.\\
+We suspect that the Read and Write Lock actually perform worse in this case because there is an overhead of creating the Read and Write Lock (more locks and condition variables to initialize) and because writers with a read and write lock are actually less efficient than the writers in mutex because they have more instructions to perform and also more wait time.
 \subsection{Average Spawn Time and Join Time}
 \begin{table}[H]
 	\centering
@@ -92,5 +95,4 @@ There are two things worth noting here:
 	\item The Average Spawn Time is somewhat similar regardless of the synchronization option used.
 	\item The more important thing is that the Average Join Time is faster by an order of 10 magnitude when running on the faster synchronization method. This is due to the fact that the join function will make the main thread waiting on the worker threads to finish. Thus, the longer the worker thread takes to finish, the longer the main thread wait, hence the more time is waste not doing work.
 \end{enumerate}
-\section{Conclusion}
 \end{document}
