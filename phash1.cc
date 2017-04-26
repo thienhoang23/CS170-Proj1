@@ -7,8 +7,11 @@
 
 #include <iostream>
 #include <pthread.h>
+#include <unistd.h>
 #include "rwlock.h"
 #include "phash.h"
+
+// extern double get_wall_time();
 
 LinkedHashEntry:: LinkedHashEntry(int key, int value) {
   this->key = key;
@@ -41,6 +44,9 @@ void LinkedHashEntry:: setNext(LinkedHashEntry *next) {
 const int TABLE_SIZE = 128;
 
 HashMap::HashMap() {
+  // get_total_time = 0.0;
+  // put_total_time = 0.0;
+  // remove_total_time = 0.0;
   table = new LinkedHashEntry*[TABLE_SIZE];
   rwlocks = new RWLock[TABLE_SIZE];
   for (int i = 0; i < TABLE_SIZE; i++)
@@ -50,6 +56,7 @@ HashMap::HashMap() {
 }
 
 int HashMap::get(int key) {
+  usleep(1);
   int hash = (key % TABLE_SIZE);
   rwlocks[hash].startRead();
   if (table[hash] == NULL){

@@ -1,0 +1,96 @@
+\documentclass[11pt]{article}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage[export]{adjustbox}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{enumerate}
+\usepackage{multirow}
+\usepackage{centernot}
+\usepackage{pbox}
+\usepackage{array}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\textwidth 17cm \topmargin -1cm \oddsidemargin 0cm \textheight 21.5cm
+\pagestyle{empty} \pagestyle{fancyplain}
+\lhead[\fancyplain{}{}]{\fancyplain{}{{\sc Thien Hoang, Angela Yung, Shreyas Radhakrishna}}}
+\rhead[\fancyplain{}{}]{\fancyplain{}{{\sc April 26, 2017}}}
+\begin{document}
+\centerline{\Large\textbf{P1A Report}}
+\vspace{0.3cm}
+\section{Introduction}
+In this report, we will try to report about the performance of a concurrent Hashtable with 1000 keys and 200 threads under 4 different synchronization options and a benchmark specified below.
+\subsection{The 4 different Synchronization Options}
+\begin{enumerate}
+	\item Coarse Grain: Using 1 mutex to lock up the entire table for each access
+	\item Coarse Grain RW: Using 1 Read-Write Lock on the entire table
+	\item Fine Grain: Using as many mutexes as there are buckets in the table to lock each bucket for each access on that bucket.
+	\item Fine Grain RW: Using as many Read-Write Locks as there are buckets in the table, each lock for 1 bucket.
+\end{enumerate}
+\subsection{The Benchmark}
+This bench mark has 3,007,996 commands including 3,002,000 gets, 4,996 puts, and 1000 removes.
+\subsection{Other}
+Besides the bench mark introduced above, we will also report about the average overhead of spawning a thread and joining a thread.
+\section{Experiments}
+\subsection{Naive Performance Benchmark}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Throughput (ops/sec)	\\
+		\hline
+		Coarse &0.640702	&6255.64\\
+		\hline
+		Coarse RW	&1.74532	&2296.43\\
+		\hline
+		Fine	&0.140331	&28561\\
+		\hline
+		Fine RW	&0.178992	&22392.1\\
+		\hline
+	\end{tabular}
+\end{table}
+\subsection{Edited Performance Benchmark}
+Because the get performance is so fast, we will need to let each thread sleep for 1 ms whenever it calls get in order to get a closer measure of the performance difference. Here is the result.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Wall Time (sec)	&Throughput (ops/sec)	\\
+		\hline
+		Coarse &8.16822	&490.682\\
+		\hline
+		Coarse RW	&8.94905	&447.869\\
+		\hline
+		Fine	&8.45008	&474.315\\
+		\hline
+		Fine RW	&8.54574	&469.006\\
+		\hline
+	\end{tabular}
+\end{table}
+\subsection{Average Spawn Time and Join Time}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Sync. Option &Average Spawn Time (sec)	&Average Join Time (sec)	\\
+		\hline
+		Coarse &0.000423615	&0.00277990\\
+		\hline
+		Coarse RW	&0.000355945	&0.00837065\\
+		\hline
+		Fine	&0.000473535	&0.00022812\\
+		\hline
+		Fine RW	&0.000443680	&0.00045128\\
+		\hline
+	\end{tabular}
+\end{table}
+There are two things worth noting here:
+\begin{enumerate}
+	\item The Average Spawn Time is somewhat similar regardless of the synchronization option used.
+	\item The more important thing is that the Average Join Time is faster by an order of 10 magnitude when running on the faster synchronization method. This is due to the fact that the join function will make the main thread waiting on the worker threads to finish. Thus, the longer the worker thread takes to finish, the longer the main thread wait, hence the more time is waste not doing work.
+\end{enumerate}
+\section{Conclusion}
+\end{document}
