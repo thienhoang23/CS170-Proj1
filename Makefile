@@ -12,19 +12,19 @@ all:  phashchain phashcoarse phashcoarserw  phashfine phashfinerw
 #all:  hashchain phashchain phashcoarse phashcoarserw  phashfine phashfinerw
 
 
-phashchain: hashchain.o ptest_RDONLY.cc
+phashchain: hashchain.o ptest-1a.cc
 	$(CC) -o $@ $^ $(FLAGS0)
 
-phashcoarse: phash.cc rwlock.cc ptest_RDONLY.cc
+phashcoarse: phash.cc rwlock.cc ptest-1a.cc
 	$(CC) -o $@ $^ $(FLAGS1)
 
-phashcoarserw: phash.cc rwlock.cc ptest_RDONLY.cc
+phashcoarserw: phash.cc rwlock.cc ptest-1a.cc
 	$(CC) -o $@ $^ $(FLAGS2)
 
-phashfine: phash1.cc rwlock.cc ptest_RDONLY.cc
+phashfine: phash1.cc rwlock.cc ptest-1a.cc
 	$(CC) -o $@ $^ $(FLAGS3)
 
-phashfinerw: phash1.cc rwlock.cc ptest_RDONLY.cc
+phashfinerw: phash1.cc rwlock.cc ptest-1a.cc
 	$(CC) -o $@ $^ $(FLAGS4)
 
 run: 

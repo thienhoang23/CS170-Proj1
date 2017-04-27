@@ -11,8 +11,6 @@
 #include "rwlock.h"
 #include "phash.h"
 
-// extern double get_wall_time();
-
 LinkedHashEntry:: LinkedHashEntry(int key, int value) {
   this->key = key;
   this->value = value;
@@ -53,7 +51,7 @@ HashMap::HashMap() {
 }
 
 int HashMap::get(int key) {
-  usleep(1);
+  //usleep(1);
   int hash = (key % TABLE_SIZE);
   rwlocks[hash].startRead();
   if (table[hash] == NULL){
@@ -93,7 +91,7 @@ void HashMap::put(int key, int value) {
 }
  
 
-bool HashMap:: remove(int key) {
+void HashMap:: remove(int key) {
   int hash = (key % TABLE_SIZE);
   rwlocks[hash].startWrite();
   if (table[hash] != NULL) {
@@ -108,19 +106,14 @@ bool HashMap:: remove(int key) {
                    LinkedHashEntry *nextEntry = entry->getNext();
                    delete entry;
                    table[hash] = nextEntry;
-                   rwlocks[hash].doneWrite();
-                   return true;
               } else {
                    LinkedHashEntry *next = entry->getNext();
                     delete entry;
                    prevEntry->setNext(next);
-                   rwlocks[hash].doneWrite();
-                   return true;
               }
         }
   }
   rwlocks[hash].doneWrite();
-  return false;
 }
  
 HashMap:: ~HashMap() {

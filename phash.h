@@ -34,6 +34,6 @@ public:
       HashMap();
       int get(int key);
       void put(int key, int value); 
-      bool remove(int key); 
+      void remove(int key); 
       ~HashMap(); 
 };
