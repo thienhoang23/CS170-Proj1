@@ -53,6 +53,7 @@ HashMap::HashMap() {
 int HashMap::get(int key) {
   //usleep(1);
   int hash = (key % TABLE_SIZE);
+  int result;
   rwlocks[hash].startRead();
   if (table[hash] == NULL){
     rwlocks[hash].doneRead();
@@ -67,8 +68,9 @@ int HashMap::get(int key) {
           return -1;
     }
     else{
+      result = entry->getValue();
       rwlocks[hash].doneRead();
-      return entry->getValue();
+      return result;
     }
   }
 }

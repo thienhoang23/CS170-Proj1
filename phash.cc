@@ -50,6 +50,7 @@ HashMap::HashMap() {
 int HashMap::get(int key) {
   //usleep(1);
   this->rwlock.startRead();
+  int result;
   int hash = (key % TABLE_SIZE);
   if (table[hash] == NULL){
     this->rwlock.doneRead();
@@ -64,8 +65,9 @@ int HashMap::get(int key) {
           return -1;
     }
     else{
+      result = entry->getValue();
       this->rwlock.doneRead();
-      return entry->getValue();
+      return result;
     }
   }
 }
