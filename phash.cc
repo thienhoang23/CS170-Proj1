@@ -11,6 +11,8 @@
 #include "rwlock.h"
 #include "phash.h"
 
+using namespace std;
+
 LinkedHashEntry:: LinkedHashEntry(int key, int value) {
   this->key = key;
   this->value = value;
@@ -49,7 +51,7 @@ HashMap::HashMap() {
 
 int HashMap::get(int key) {
   //usleep(1);
-  this->rwlock.startRead();
+  this->rwlock.startRead();  
   int result;
   int hash = (key % TABLE_SIZE);
   if (table[hash] == NULL){
@@ -79,7 +81,7 @@ void HashMap::put(int key, int value) {
         table[hash] = new LinkedHashEntry(key, value);
   else {
         LinkedHashEntry *entry = table[hash];
-        while (entry->getNext() != NULL)
+        while (entry->getKey() != key && entry->getNext() != NULL )
               entry = entry->getNext();
         if (entry->getKey() == key)
           entry->setValue(value); 
@@ -112,6 +114,7 @@ void HashMap:: remove(int key) {
               }
         }
   }
+  // cout << "Unlock The Table After Remove" << endl; 
   this->rwlock.doneWrite();
 } 
 
