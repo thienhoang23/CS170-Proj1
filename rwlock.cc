@@ -23,7 +23,7 @@ RWLock::~RWLock(){
 }
 
 void RWLock::startRead(){
-	while(pthread_mutex_lock(&this->lock));
+	pthread_mutex_lock(&this->lock);
 	#ifdef RWLOCK
 		while ((this->AW + this->WW) > 0){
 			this->WR++;
@@ -48,7 +48,7 @@ void RWLock::doneRead(){
 }
 
 void RWLock::startWrite(){
-	while(pthread_mutex_lock(&this->lock));
+	pthread_mutex_lock(&this->lock);
 	#ifdef RWLOCK
 		while(  (this->AW + this->AR) > 0){
 			this->WW++;

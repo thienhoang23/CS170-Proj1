@@ -114,7 +114,6 @@ void HashMap:: remove(int key) {
               }
         }
   }
-  // cout << "Unlock The Table After Remove" << endl; 
   this->rwlock.doneWrite();
 } 
 
